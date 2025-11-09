@@ -135,6 +135,34 @@
 /* Optional: tighten spacing now that the line is gone */
 .sigwrap { gap: 8px; margin-top: 8px; }
 
+  /* Hide the original signature bar */
+.sigline { display: none !important; }
+
+/* Put signer block right under "Thank you", with two lines for a hand signature */
+.sigwrap{
+  display:block;
+  margin-top:12px;           /* small gap after "Thank you" */
+  text-align:left;           /* signer on the left */
+}
+.sigwrap::before,
+.sigwrap::after{
+  content:"";
+  display:block;
+  height:0;
+  border-bottom:1px solid color-mix(in srgb, var(--accent) 30%, #d1d5db);
+  margin:8px 0;              /* creates the “two lines” space */
+}
+
+/* Ensure the printed signature name is strong and tucked under the lines */
+#signer{ font-weight:700; margin-top:2px; }
+
+/* Terms: one line below signer, right-aligned */
+.terms{
+  margin-top:12px;           /* ~one text line gap after signer */
+  text-align:right;
+}
+
+
   
 </style>
 </head>
@@ -212,7 +240,6 @@
     </section>
 
     <div class="thanks">Thank you for your business!</div>
-    <div class="terms" id="terms"></div>
 
     <div class="sigwrap" id="sign_block">
       <div class="sigline"></div>
@@ -220,6 +247,8 @@
         <div style="font-weight:700; margin-top:8px" id="signer"></div>
       </div>
     </div>
+    
+    <div class="terms" id="terms"></div>
 
     <footer class="footer">
       <div>
