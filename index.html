@@ -12,7 +12,7 @@
     --bg:#f6f7f8; --paper:#fff; --ink:#111827; --muted:#6b7280;
     --line:#e5e7eb; --accent:#2f2f2f; --pill:#d1d5db;
 
-    /* Tints derived from --accent */
+    /* Tints derived from --accent for “transparent” look */
     --tint-6:  color-mix(in srgb, var(--accent) 8%,  #fff);
     --tint-12: color-mix(in srgb, var(--accent) 12%, #fff);
     --tint-20: color-mix(in srgb, var(--accent) 20%, #fff);
@@ -39,12 +39,11 @@
     width:56px; height:56px; border:1px solid var(--line); border-radius:12px;
     display:grid; place-items:center; overflow:hidden; background:#fff
   }
-  .logo:empty{ display:none; } /* hide empty logo box */
+  .logo:empty{ display:none; }
   .logo img{ max-width:100%; max-height:100%; object-fit:contain }
   .t1{ font-size:20px; font-weight:800; letter-spacing:.02em }
   .t2{ font-size:12px; color:var(--muted); margin-top:2px }
 
-  /* Neutral title (not accent) */
   .inv-title{ font-size:30px; letter-spacing:.04em; font-weight:900; color:var(--ink) }
 
   /* Top divider uses accent */
@@ -62,7 +61,7 @@
   .kv{ display:grid; grid-template-columns:140px 1fr; gap:6px 12px; font-size:13px }
   .label{ color:var(--muted) }
 
-  /* Right meta is borderless but LEFT-aligned and same grid as left */
+  /* Right meta (borderless, aligned) */
   .meta-plain{ border:none; background:transparent; padding:0; text-align:left; }
   .meta-plain .kv{ grid-template-columns:140px 1fr; margin-top:4px }
   .meta-plain h4{ margin:10px 0 4px; text-transform:none; letter-spacing:0; font-weight:700; text-align:left }
@@ -93,14 +92,32 @@
     font-weight:900; display:flex; justify-content:space-between
   }
 
-  /* Thanks & signature */
+  /* Thanks, signature, terms */
   .thanks{ margin-top:16px; font-weight:700 }
-  .terms{ margin-top:6px; font-size:13px; color:#4b5563 }
-  .sigwrap{ display:flex; justify-content:flex-end; gap:28px; align-items:flex-end; margin-top:24px }
-  .sigline{ width:240px; border-bottom:2px solid color-mix(in srgb, var(--accent) 30%, #d1d5db); height:50px }
-  .sigmeta{ text-align:right; font-size:12px; color:#4b5563 }
 
-  /* Footer (bottom separator uses accent tint) */
+  /* Signature block just under “Thanks”: no lines; extra space for handwriting above the name */
+  .sigwrap{
+    display:block;
+    margin-top:14px;         /* small gap after Thanks */
+    text-align:right;        /* name/role on the right */
+    position:relative;
+  }
+  .sigwrap::before{
+    content:"";
+    display:block;
+    height:44px;            /* space reserved for a hand signature */
+  }
+  #signer{ font-weight:700; margin-top:2px; }
+
+  /* Terms one line below signer, right-aligned */
+  .terms{
+    margin-top:12px;
+    font-size:13px;
+    color:#4b5563;
+    text-align:right;
+  }
+
+  /* Footer (bottom separator tint) */
   .footer{
     display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:18px; padding-top:14px;
     border-top:1px solid var(--tint-20); color:#374151
@@ -128,42 +145,6 @@
       .sheet{ width:auto; max-width:none; padding: 3mm; }
     }
   }
-
-  /* Remove only the signature line/bar */
-.sigline { display: none !important; }
-
-/* Optional: tighten spacing now that the line is gone */
-.sigwrap { gap: 8px; margin-top: 8px; }
-
-  /* Hide the original signature bar */
-.sigline { display: none !important; }
-
-/* Put signer block right under "Thank you", with two lines for a hand signature */
-.sigwrap{
-  display:block;
-  margin-top:12px;           /* small gap after "Thank you" */
-  text-align:left;           /* signer on the left */
-}
-.sigwrap::before,
-.sigwrap::after{
-  content:"";
-  display:block;
-  height:0;
-  border-bottom:1px solid color-mix(in srgb, var(--accent) 30%, #d1d5db);
-  margin:8px 0;              /* creates the “two lines” space */
-}
-
-/* Ensure the printed signature name is strong and tucked under the lines */
-#signer{ font-weight:700; margin-top:2px; }
-
-/* Terms: one line below signer, right-aligned */
-.terms{
-  margin-top:12px;           /* ~one text line gap after signer */
-  text-align:right;
-}
-
-
-  
 </style>
 </head>
 <body>
@@ -197,7 +178,7 @@
         </div>
       </div>
 
-      <!-- INVOICE META (borderless, aligned) -->
+      <!-- INVOICE META -->
       <div class="box meta-plain">
         <div class="kv">
           <div class="label">Invoice no :</div><div id="invoice_number"></div>
@@ -241,13 +222,14 @@
 
     <div class="thanks">Thank you for your business!</div>
 
+    <!-- Signer just under Thanks, with space above for handwriting -->
     <div class="sigwrap" id="sign_block">
-      <div class="sigline"></div>
       <div class="sigmeta">
-        <div style="font-weight:700; margin-top:8px" id="signer"></div>
+        <div id="signer"></div>
       </div>
     </div>
-    
+
+    <!-- Terms: right-aligned, one line below signer -->
     <div class="terms" id="terms"></div>
 
     <footer class="footer">
@@ -286,7 +268,7 @@
     const n = parseFloat(String(v).replace(/[^0-9.-]/g,'')); return isNaN(n)?0:n;
   };
   const money = n => Number(n||0).toLocaleString(undefined,{style:'currency',currency:ccy});
-  const esc = s => String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&gt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const esc = s => String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 
   function setText(id, value){
     const el = document.getElementById(id); if(!el) return;
@@ -347,7 +329,7 @@
   setText('bank_name', get('bank_name',''));
   setText('bank_acc_name', get('bank_acc_name',''));
   setText('bank_acc_no', get('bank_acc_no',''));
-  const bsb = get('bank_bsb','') || get('bank_routing',''); // FIXED: removed extra parenthesis
+  const bsb = get('bank_bsb','') || get('bank_routing','');
   setText('bank_bsb', bsb);
 
   // Footer contact from company
@@ -412,7 +394,7 @@
     (taxRate || taxRate===0) ? `(${(taxRate*100).toFixed(0)}%)` : '';
   setText('grand_total', money(grand));
 
-  // Signature
+  // Signature (hide whole block if no signer provided)
   const signerText = [get('signer_name','').trim(), get('signer_role','').trim()].filter(Boolean).join(' · ');
   if (signerText) document.getElementById('signer').textContent = signerText;
   else document.getElementById('sign_block').style.display = 'none';
