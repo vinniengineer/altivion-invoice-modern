@@ -9,12 +9,16 @@
 <meta http-equiv="Expires" content="0" />
 <style>
   :root{
-    --bg:#f6f7f8; --paper:#fff; --ink:#111827; --muted:#6b7280; --line:#e5e7eb; --accent:#2f2f2f;
-    --pill:#d1d5db;
-    /* new tints (fallbacks keep your old greys) */
-    --tint-12:#f3f4f6; /* table header bg */
-    --tint-6:#fafafa;  /* zebra rows */
+    --bg:#f6f7f8; --paper:#fff; --ink:#111827; --muted:#6b7280;
+    --line:#e5e7eb; --accent:#2f2f2f; --pill:#d1d5db;
+
+    /* Tints computed from accent using color-mix for a translucent feel */
+    --tint-6:  color-mix(in srgb, var(--accent) 8%,  #fff);
+    --tint-12: color-mix(in srgb, var(--accent) 12%, #fff);
+    --tint-20: color-mix(in srgb, var(--accent) 20%, #fff);
+    --tint-28: color-mix(in srgb, var(--accent) 28%, #fff);
   }
+
   *{ box-sizing:border-box }
   html,body{ height:auto; min-height:100%; }
   body{
@@ -41,7 +45,7 @@
   .t1{ font-size:20px; font-weight:800; letter-spacing:.02em }
   .t2{ font-size:12px; color:var(--muted); margin-top:2px }
 
-  /* Neutral title (not accent) */
+  /* Neutral title */
   .inv-title{ font-size:30px; letter-spacing:.04em; font-weight:900; color:var(--ink) }
 
   /* Top divider uses accent */
@@ -59,7 +63,7 @@
   .kv{ display:grid; grid-template-columns:140px 1fr; gap:6px 12px; font-size:13px }
   .label{ color:var(--muted) }
 
-  /* Right meta is borderless but LEFT-aligned and same grid as left */
+  /* Right meta stays borderless & left-aligned */
   .meta-plain{ border:none; background:transparent; padding:0; text-align:left; }
   .meta-plain .kv{ grid-template-columns:140px 1fr; margin-top:4px }
   .meta-plain h4{ margin:10px 0 4px; text-transform:none; letter-spacing:0; font-weight:700; text-align:left }
@@ -70,12 +74,11 @@
   table{ width:100%; border-collapse:collapse; }
   thead th{
     text-transform:uppercase; letter-spacing:.05em; font-size:10.5px; color:#4b5563;
-    border-bottom:none; padding:8px 10px; text-align:center;
-    background:var(--tint-12); /* tinted */
+    border-bottom:none; padding:8px 10px; background:var(--tint-12); text-align:center;
   }
   tbody td{ padding:9px 10px; border-bottom:1px solid #eceff1; text-align:center; vertical-align:middle; font-size:12.5px }
   tbody td.desc-cell{ text-align:left }
-  tbody tr:nth-child(2n){ background:var(--tint-6) } /* tinted zebra */
+  tbody tr:nth-child(2n){ background:var(--tint-6) }
   td.num{ white-space:nowrap }
 
   /* Totals & payment */
@@ -87,7 +90,7 @@
   .sum .row{ display:flex; justify-content:space-between; margin:4px 0; }
   .sum .row .label{ color:#6b7280 }
   .grand{
-    margin-top:8px; background:var(--pill); color:#111827; padding:12px 14px; border-radius:12px;
+    margin-top:8px; background:var(--tint-28); color:#111827; padding:12px 14px; border-radius:12px;
     font-weight:900; display:flex; justify-content:space-between
   }
 
@@ -95,11 +98,14 @@
   .thanks{ margin-top:16px; font-weight:700 }
   .terms{ margin-top:6px; font-size:13px; color:#4b5563 }
   .sigwrap{ display:flex; justify-content:flex-end; gap:28px; align-items:flex-end; margin-top:24px }
-  .sigline{ width:240px; border-bottom:1px solid #d1d5db; height:50px }
+  .sigline{ width:240px; border-bottom:2px solid color-mix(in srgb, var(--accent) 30%, #d1d5db); height:50px }
   .sigmeta{ text-align:right; font-size:12px; color:#4b5563 }
 
-  /* Footer */
-  .footer{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:18px; padding-top:14px; border-top:1px solid #e5e7eb; color:#374151 }
+  /* Footer (bottom separator uses accent tint) */
+  .footer{
+    display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:18px; padding-top:14px;
+    border-top:1px solid var(--tint-20); color:#374151
+  }
   .footer div{ display:flex; align-items:center; gap:10px; }
   .icon{
     width:28px; height:28px; border:1px solid #d1d5db; border-radius:50%; display:grid; place-items:center;
@@ -237,28 +243,6 @@
   (function(){
     const col = (get('template_colour','') || '').trim();
     if(col){ document.documentElement.style.setProperty('--accent', col); }
-
-    // derive transparent tints (6% and 12%) from the selected color
-    function setTintsFromColor(cstr){
-      // supports #rgb/#rrggbb and rgb(a)
-      let r,g,b, m;
-      if(/^#([0-9a-f]{3})$/i.test(cstr)){
-        m = cstr.match(/^#([0-9a-f])([0-9a-f])([0-9a-f])$/i);
-        r = parseInt(m[1]+m[1],16); g = parseInt(m[2]+m[2],16); b = parseInt(m[3]+m[3],16);
-      } else if(/^#([0-9a-f]{6})$/i.test(cstr)){
-        m = cstr.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i);
-        r = parseInt(m[1],16); g = parseInt(m[2],16); b = parseInt(m[3],16);
-      } else if(/^rgba?\(/i.test(cstr)){
-        m = cstr.match(/rgba?\((\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
-        if(m){ r = +m[1]; g = +m[2]; b = +m[3]; }
-      }
-      if([r,g,b].every(v => Number.isFinite(v))){
-        const root = document.documentElement.style;
-        root.setProperty('--tint-6',  `rgba(${r},${g},${b},0.06)`);
-        root.setProperty('--tint-12', `rgba(${r},${g},${b},0.12)`);
-      }
-    }
-    if(col) setTintsFromColor(col);
   })();
 
   const clean = v => {
@@ -327,7 +311,7 @@
   setText('bank_name', get('bank_name',''));
   setText('bank_acc_name', get('bank_acc_name',''));
   setText('bank_acc_no', get('bank_acc_no',''));
-  const bsb = get('bank_bsb','') || get('bank_routing','');
+  const bsb = get('bank_bsb','') || get('bank_routing',''));
   setText('bank_bsb', bsb);
 
   // Footer contact from company
