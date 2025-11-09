@@ -10,11 +10,7 @@
 <style>
   :root{
     --bg:#f6f7f8; --paper:#fff; --ink:#111827; --muted:#6b7280; --line:#e5e7eb; --accent:#2f2f2f;
-    /* dynamic tints derived from --accent in JS */
-    --t-8: rgba(47,47,47,.08);
-    --t-12: rgba(47,47,47,.12);
-    --t-18: rgba(47,47,47,.18);
-    --t-24: rgba(47,47,47,.24);
+    --pill:#d1d5db;
   }
   *{ box-sizing:border-box }
   html,body{ height:auto; min-height:100%; }
@@ -48,7 +44,7 @@
   /* Top divider uses accent */
   .divider{
     height:3px; border-radius:3px; margin:12px 0 4px;
-    background:linear-gradient(90deg, var(--accent) 0 15%, color-mix(in srgb, var(--accent) 25%, #c7c9cc) 15% 100%);
+    background:linear-gradient(90deg, var(--accent) 0 15%, #c7c9cc 15% 100%);
   }
   .site{ display:none; }
 
@@ -64,53 +60,45 @@
   .meta-plain{ border:none; background:transparent; padding:0; text-align:left; }
   .meta-plain .kv{ grid-template-columns:140px 1fr; margin-top:4px }
   .meta-plain h4{ margin:10px 0 4px; text-transform:none; letter-spacing:0; font-weight:700; text-align:left }
-  .desc{
-    margin-top:8px; font-size:13px; color:#374151;
-    background:var(--t-8); border:1px dashed color-mix(in oklab, var(--accent) 35%, #e2e8f0); border-radius:8px; padding:8px 10px;
-  }
+  .desc{ margin-top:8px; font-size:13px; color:#374151; }
 
   /* Items */
   h3.section{ margin:18px 0 10px; font-size:15px; font-weight:800; letter-spacing:.02em; text-align:center }
   table{ width:100%; border-collapse:collapse; }
   thead th{
-    text-transform:uppercase; letter-spacing:.05em; font-size:10.5px; color:#0f172a;
-    border-bottom:none; padding:8px 10px; text-align:center;
-    background:var(--t-18); /* tinted header */
-    border-top-left-radius:6px; border-top-right-radius:6px;
+    text-transform:uppercase; letter-spacing:.05em; font-size:10.5px; color:#4b5563;
+    border-bottom:none; padding:8px 10px; background:#f3f4f6; text-align:center;
   }
-  tbody td{
-    padding:9px 10px; border-bottom:1px solid color-mix(in oklab, var(--accent) 18%, #eceff1);
-    text-align:center; vertical-align:middle; font-size:12.5px; background:#fff;
-  }
-  tbody tr:nth-child(2n) td{ background:var(--t-8) } /* tinted zebra */
+  tbody td{ padding:9px 10px; border-bottom:1px solid #eceff1; text-align:center; vertical-align:middle; font-size:12.5px }
   tbody td.desc-cell{ text-align:left }
+  tbody tr:nth-child(2n){ background:#fafafa }
   td.num{ white-space:nowrap }
 
   /* Totals & payment */
   .totals{ display:grid; grid-template-columns:1fr 260px; gap:16px; margin-top:16px; align-items:start }
-  .pay{ border:1px solid color-mix(in oklab, var(--accent) 28%, #e5e7eb); border-radius:10px; padding:12px 14px; background:var(--t-8) }
-  .pay h5{ margin:0 0 8px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; font-size:12px; color:#334155 }
+  .pay{ border:1px solid var(--line); border-radius:10px; padding:12px 14px; background:#fff }
+  .pay h5{ margin:0 0 8px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; font-size:12px; color:#4b5563 }
   .pay p{ margin:0; font-size:13px }
-  .sum{ border:1px solid color-mix(in oklab, var(--accent) 28%, #e5e7eb); border-radius:10px; background:var(--t-8); padding:12px 14px }
+  .sum{ border:1px solid var(--line); border-radius:10px; background:#fff; padding:12px 14px }
   .sum .row{ display:flex; justify-content:space-between; margin:4px 0; }
-  .sum .row .label{ color:#334155 }
+  .sum .row .label{ color:#6b7280 }
   .grand{
-    margin-top:8px; background:var(--t-24); color:#111827; padding:12px 14px; border-radius:12px;
-    font-weight:900; display:flex; justify-content:space-between; border:1px solid color-mix(in oklab, var(--accent) 40%, #cbd5e1);
+    margin-top:8px; background:var(--pill); color:#111827; padding:12px 14px; border-radius:12px;
+    font-weight:900; display:flex; justify-content:space-between
   }
 
   /* Thanks & signature */
   .thanks{ margin-top:16px; font-weight:700 }
   .terms{ margin-top:6px; font-size:13px; color:#4b5563 }
   .sigwrap{ display:flex; justify-content:flex-end; gap:28px; align-items:flex-end; margin-top:24px }
-  .sigline{ width:240px; border-bottom:2px dashed color-mix(in oklab, var(--accent) 45%, #cbd5e1); height:50px }
+  .sigline{ width:240px; border-bottom:1px solid #d1d5db; height:50px }
   .sigmeta{ text-align:right; font-size:12px; color:#4b5563 }
 
   /* Footer */
-  .footer{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:18px; padding-top:14px; border-top:1px solid color-mix(in oklab, var(--accent) 28%, #e5e7eb); color:#374151 }
+  .footer{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:18px; padding-top:14px; border-top:1px solid #e5e7eb; color:#374151 }
   .footer div{ display:flex; align-items:center; gap:10px; }
   .icon{
-    width:28px; height:28px; border:1px solid color-mix(in oklab, var(--accent) 28%, #d1d5db); border-radius:50%; display:grid; place-items:center;
+    width:28px; height:28px; border:1px solid #d1d5db; border-radius:50%; display:grid; place-items:center;
     padding:3px; background:#fff;
   }
   .icon svg{ width:18px; height:18px; stroke:#6b7280; fill:none; stroke-width:2; display:block; }
@@ -119,11 +107,7 @@
   /* Print */
   @media print {
     @page { size: A4 portrait; margin: 5mm; }
-    .sheet{
-      width: 200mm; margin: 0 auto; padding: 3mm 4mm 5mm;
-      border: none; box-shadow: none;
-      page-break-inside: avoid; break-inside: avoid;
-    }
+    .sheet{ width: 200mm; margin: 0 auto; padding: 3mm 4mm 5mm; border: none; box-shadow: none; }
     body{ font-size: 12.5px; }
     table thead th{ font-size: 10px; }
     tbody td{ padding: 6px; }
@@ -245,27 +229,10 @@
   const get = (k, d='') => qp.get(k) ?? d;
   const ccy = get('ccy','AUD');
 
-  // Accent color from ?template_colour + derive transparent tints
+  // Accent color from ?template_colour
   (function(){
     const col = (get('template_colour','') || '').trim();
-    if(col){
-      document.documentElement.style.setProperty('--accent', col);
-      try{
-        // Convert any css color into rgb then create rgba tints
-        const probe = document.createElement('div');
-        probe.style.color = col;
-        document.body.appendChild(probe);
-        const m = getComputedStyle(probe).color.match(/rgba?\\((\\d+),\\s*(\\d+),\\s*(\\d+)/i);
-        document.body.removeChild(probe);
-        if(m){
-          const r=m[1], g=m[2], b=m[3];
-          document.documentElement.style.setProperty('--t-8',  `rgba(${r},${g},${b},.08)`);
-          document.documentElement.style.setProperty('--t-12', `rgba(${r},${g},${b},.12)`);
-          document.documentElement.style.setProperty('--t-18', `rgba(${r},${g},${b},.18)`);
-          document.documentElement.style.setProperty('--t-24', `rgba(${r},${g},${b},.24)`);
-        }
-      }catch(e){}
-    }
+    if(col){ document.documentElement.style.setProperty('--accent', col); }
   })();
 
   const clean = v => {
