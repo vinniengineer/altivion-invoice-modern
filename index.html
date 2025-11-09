@@ -12,13 +12,12 @@
     --bg:#f6f7f8; --paper:#fff; --ink:#111827; --muted:#6b7280;
     --line:#e5e7eb; --accent:#2f2f2f; --pill:#d1d5db;
 
-    /* Tints computed from accent using color-mix for a translucent feel */
+    /* Tints derived from --accent */
     --tint-6:  color-mix(in srgb, var(--accent) 8%,  #fff);
     --tint-12: color-mix(in srgb, var(--accent) 12%, #fff);
     --tint-20: color-mix(in srgb, var(--accent) 20%, #fff);
     --tint-28: color-mix(in srgb, var(--accent) 28%, #fff);
   }
-
   *{ box-sizing:border-box }
   html,body{ height:auto; min-height:100%; }
   body{
@@ -45,7 +44,7 @@
   .t1{ font-size:20px; font-weight:800; letter-spacing:.02em }
   .t2{ font-size:12px; color:var(--muted); margin-top:2px }
 
-  /* Neutral title */
+  /* Neutral title (not accent) */
   .inv-title{ font-size:30px; letter-spacing:.04em; font-weight:900; color:var(--ink) }
 
   /* Top divider uses accent */
@@ -63,7 +62,7 @@
   .kv{ display:grid; grid-template-columns:140px 1fr; gap:6px 12px; font-size:13px }
   .label{ color:var(--muted) }
 
-  /* Right meta stays borderless & left-aligned */
+  /* Right meta is borderless but LEFT-aligned and same grid as left */
   .meta-plain{ border:none; background:transparent; padding:0; text-align:left; }
   .meta-plain .kv{ grid-template-columns:140px 1fr; margin-top:4px }
   .meta-plain h4{ margin:10px 0 4px; text-transform:none; letter-spacing:0; font-weight:700; text-align:left }
@@ -250,7 +249,7 @@
     const n = parseFloat(String(v).replace(/[^0-9.-]/g,'')); return isNaN(n)?0:n;
   };
   const money = n => Number(n||0).toLocaleString(undefined,{style:'currency',currency:ccy});
-  const esc = s => String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const esc = s => String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&gt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 
   function setText(id, value){
     const el = document.getElementById(id); if(!el) return;
@@ -311,7 +310,7 @@
   setText('bank_name', get('bank_name',''));
   setText('bank_acc_name', get('bank_acc_name',''));
   setText('bank_acc_no', get('bank_acc_no',''));
-  const bsb = get('bank_bsb','') || get('bank_routing',''));
+  const bsb = get('bank_bsb','') || get('bank_routing',''); // FIXED: removed extra parenthesis
   setText('bank_bsb', bsb);
 
   // Footer contact from company
