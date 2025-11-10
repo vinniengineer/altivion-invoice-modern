@@ -87,10 +87,20 @@
   .sum{ border:1px solid var(--line); border-radius:10px; background:#fff; padding:12px 14px }
   .sum .row{ display:flex; justify-content:space-between; margin:4px 0; }
   .sum .row .label{ color:#6b7280 }
-  .grand{
-    margin-top:8px; background:var(--tint-28); color:#111827; padding:12px 14px; border-radius:12px;
-    font-weight:900; display:flex; justify-content:space-between
-  }
+
+  /* Grand total pill – modern template */
+.grand{
+  margin-top:8px;
+  background: color-mix(in srgb, var(--accent) 10%, #fff); /* subtle tint of selected colour */
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, #d1d5db); /* thin outline */
+  color:#111827;
+  padding:12px 14px;
+  border-radius:12px;
+  font-weight:900;
+  display:flex;
+  justify-content:space-between;
+}
+
 
   /* Thanks, signature, terms */
   .thanks{
