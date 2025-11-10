@@ -89,49 +89,38 @@
   .sum .row .label{ color:#6b7280 }
 
   /* Grand total pill – modern template */
-.grand{
-  margin-top:8px;
-  background: color-mix(in srgb, var(--accent) 10%, #fff); /* subtle tint of selected colour */
-  border: 1px solid color-mix(in srgb, var(--accent) 22%, #d1d5db); /* thin outline */
-  color:#111827;
-  padding:12px 14px;
-  border-radius:12px;
-  font-weight:900;
-  display:flex;
-  justify-content:space-between;
-}
-
+  .grand{
+    margin-top:8px;
+    background: color-mix(in srgb, var(--accent) 10%, #fff);
+    border: 1px solid color-mix(in srgb, var(--accent) 22%, #d1d5db);
+    color:#111827;
+    padding:12px 14px;
+    border-radius:12px;
+    font-weight:900;
+    display:flex;
+    justify-content:space-between;
+  }
 
   /* Thanks, signature, terms */
   .thanks{
-  margin-top:16px;
-  font-weight:700;
-  text-align:right;   /* move 'Thank you...' to the right */
-}
-
-
-  /* Signature block just under “Thanks”: no lines; extra space for handwriting above the name */
+    margin-top:16px;
+    font-weight:700;
+    text-align:right;
+  }
   .sigwrap{
     display:block;
-    margin-top:14px;         /* small gap after Thanks */
-    text-align:right;        /* name/role on the right */
+    margin-top:14px;
+    text-align:right;
     position:relative;
   }
-  .sigwrap::before{
-    content:"";
-    display:block;
-    height:44px;            /* space reserved for a hand signature */
-  }
+  .sigwrap::before{ content:""; display:block; height:44px; }
   #signer{ font-weight:700; margin-top:2px; }
-
-  /* Terms one line below signer, right-aligned */
   .terms{
-  margin-top:12px;
-  font-size:12px;   /* smaller text */
-  color:#4b5563;
-  text-align:right;
-}
-
+    margin-top:12px;
+    font-size:12px;
+    color:#4b5563;
+    text-align:right;
+  }
 
   /* Footer (bottom separator tint) */
   .footer{
@@ -145,6 +134,24 @@
   }
   .icon svg{ width:18px; height:18px; stroke:#6b7280; fill:none; stroke-width:2; display:block; }
   .footer small{ font-size:12px }
+
+  /* ---- Footer adjustments (only change made) ---- */
+  .footer{
+    grid-template-columns: auto auto 1fr;   /* give address the flexible width */
+    gap: 18px 28px;
+    align-items: center;
+  }
+  .footer div{ min-width:0; }               /* allow 1fr cell to shrink/grow */
+  .icon{
+    width:22px; height:22px; padding:2px;   /* smaller icons */
+    border:1px solid #e2e8f0;
+  }
+  .icon svg{ width:14px; height:14px; stroke:#94a3b8; }
+  .footer .nowrap{ white-space:nowrap; }    /* keep phone/email on one line */
+  .footer .addr{
+    white-space:nowrap;                      /* avoid line break */
+    overflow:hidden; text-overflow:ellipsis; /* trim if too long */
+  }
 
   /* Print */
   @media print {
@@ -252,17 +259,17 @@
       <div>
         <span class="icon">
           <svg viewBox="0 0 24 24"><path d="M2 3h4l2 5-3 2a16 16 0 0 0 7 7l2-3 5 2v4a2 2 0 0 1-2 2c-9.94 0-18-8.06-18-18a2 2 0 0 1 2-2z"/></svg>
-        </span> <small id="from_phone_footer"></small>
+        </span> <small id="from_phone_footer" class="nowrap"></small>
       </div>
       <div>
         <span class="icon">
           <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" ry="2"/><path d="M3 7l9 6 9-6"/></svg>
-        </span> <small id="from_email_footer"></small>
+        </span> <small id="from_email_footer" class="nowrap"></small>
       </div>
       <div>
         <span class="icon">
           <svg viewBox="0 0 24 24"><path d="M12 21s7-4.35 7-10a7 7 0 0 0-14 0c0 5.65 7 10 7 10z"/><circle cx="12" cy="11" r="3"/></svg>
-        </span> <small id="from_address_footer"></small>
+        </span> <small id="from_address_footer" class="addr"></small>
       </div>
     </footer>
   </div>
