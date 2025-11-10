@@ -168,6 +168,27 @@
       .sheet{ width:auto; max-width:none; padding: 3mm; }
     }
   }
+
+/* === Center footer row === */
+.footer{
+  grid-template-columns: auto auto auto; /* equal autos */
+  justify-content: center;               /* center the whole group */
+  gap: 18px 32px;                        /* spacing between blocks */
+  text-align: center;                    /* center the text in each cell */
+}
+
+.footer div{
+  justify-content: center;               /* center icon + text inside each cell */
+}
+
+.footer .nowrap{ white-space:nowrap; }
+.footer .addr{
+  white-space:nowrap;                    /* keep on one line if it fits */
+  overflow:hidden; text-overflow:ellipsis;
+  max-width: 380px;                      /* safety so it doesn’t push others */
+}
+
+  
 </style>
 </head>
 <body>
